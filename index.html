@@ -13,7 +13,7 @@
 
   <style>
     :root {
-
+      /* Default: Dark & Cozy Halloween Pumpkin-Patch Palette (Zero Gore!) */
       --bg-primary: #0f0a19;
       --bg-card: #1b132b;
       --bg-inset: #130d20;
@@ -21,10 +21,11 @@
       --text-muted: #bba8d6;
       --accent-berry: #ff7518; /* Pumpkin Spice Orange */
       --accent-amber: #ffbe0b; /* Candlelight Gold */
-      --accent-witch: #9d4edd; 
+      --accent-witch: #9d4edd; /* Friendly Witch Violet */
       --border-color: #4a3570;
       --shadow-retro: 4px 4px 0px #06030a;
       --glow-card: 0 0 24px rgba(255, 117, 24, 0.12);
+      --torch-color: rgba(255, 117, 24, 0.18);
     }
 
     [data-theme="witching"] {
@@ -40,6 +41,7 @@
       --border-color: #313d66;
       --shadow-retro: 4px 4px 0px #020308;
       --glow-card: 0 0 26px rgba(94, 234, 212, 0.14);
+      --torch-color: rgba(94, 234, 212, 0.18);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,6 +57,20 @@
       line-height: 1.6;
       overflow-x: hidden;
       transition: background-color 0.4s ease, color 0.4s ease;
+      position: relative;
+    }
+    #nightlightTorch {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 90;
+      transition: opacity 0.4s ease;
+      background: radial-gradient(
+        circle 270px at var(--cursor-x, 50vw) var(--cursor-y, 50vh),
+        var(--torch-color) 0%,
+        rgba(15, 10, 25, 0.45) 65%,
+        rgba(5, 3, 10, 0.78) 100%
+      );
     }
 
     h1, h2, h3 {
@@ -62,6 +78,7 @@
       line-height: 1.2;
     }
 
+    /* Cozy Cobweb Corner Accents */
     .cobweb-corner {
       position: fixed;
       top: 0;
@@ -70,7 +87,7 @@
       height: 110px;
       pointer-events: none;
       opacity: 0.25;
-      z-index: 50;
+      z-index: 95;
     }
     .cobweb-right {
       left: auto;
@@ -137,8 +154,15 @@
       font-weight: 700;
     }
 
-    .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px;
+      position: relative;
+      z-index: 95;
+    }
 
+    /* Hero Section */
     .hero {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -173,7 +197,7 @@
       50% { transform: translateY(-10px); }
     }
 
-  
+    /* Interactive Eye-Tracking Widget */
     .eye-tracker-pill {
       margin-top: 12px;
       padding: 6px 14px;
@@ -205,6 +229,7 @@
       transition: transform 0.05s linear;
     }
 
+    /* Hidden Easter Egg Jack-o'-Lantern / Star */
     .secret-star {
       position: absolute;
       top: 16px; right: 20px;
@@ -216,6 +241,7 @@
     }
     .secret-star:hover { transform: scale(1.25) rotate(15deg); }
 
+    /* Grid for 3 Showcase Projects */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
@@ -249,6 +275,7 @@
       margin-bottom: 14px;
     }
 
+    /* Lullaby Synth Keys */
     .synth-keys {
       display: flex;
       gap: 6px;
@@ -263,23 +290,24 @@
       font-weight: 700;
       cursor: pointer;
       color: var(--accent-amber);
-      transition: background 0.15s ease, transform 0.1s ease;
+      transition: background 0.15s ease, transform 0.1s ease, color 0.15s ease;
     }
     .synth-key:hover { border-color: var(--accent-berry); }
-    .synth-key:active {
+    .synth-key:active,
+    .synth-key.playing {
       background: var(--accent-berry);
       color: #0f0a19;
+      border-color: var(--accent-amber);
       transform: translateY(2px);
+      box-shadow: 0 0 12px var(--accent-berry);
     }
-
-
     .story-scene {
       background: var(--bg-card);
       border: 2.5px solid var(--border-color);
       border-left: 6px solid var(--accent-berry);
       border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 20px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
       box-shadow: var(--shadow-retro), var(--glow-card);
       opacity: 0;
       transform: translateY(24px);
@@ -288,6 +316,16 @@
     .story-scene.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+    .scene-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #0f0a19;
+      background: var(--accent-amber);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
     }
 
     /* Form Inputs */
@@ -316,10 +354,9 @@
       font-weight: 700;
       box-shadow: 0 0 14px rgba(255, 117, 24, 0.25);
     }
-
-    /* Responsive Chaos Mode (+5 pts Side Quest) */
     body.chaos-mode .card:nth-child(odd) { transform: rotate(-2.2deg); border-color: var(--accent-amber); }
     body.chaos-mode .card:nth-child(even) { transform: rotate(2.5deg); border-color: var(--accent-berry); }
+    body.chaos-mode .story-scene:nth-child(odd) { transform: rotate(1.2deg); }
     body.chaos-mode .hero { border-style: dashed; transform: rotate(-0.8deg); }
 
     .sparkle {
@@ -334,20 +371,60 @@
       100% { opacity: 0; transform: scale(0.3) translateY(20px); }
     }
 
+    /* Guestbook entries and footer */
+    .guest-entry {
+      background: var(--bg-inset);
+      border: 2px dashed var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .guest-entry strong { color: var(--accent-amber); }
+    .site-footer {
+      text-align: center;
+      padding: 8px 0 48px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card);
+      color: var(--text-main);
+      border: 2.5px solid var(--accent-berry);
+      border-radius: 999px;
+      padding: 10px 20px;
+      box-shadow: var(--shadow-retro), var(--glow-card);
+      z-index: 10000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
     @media (max-width: 768px) {
       .hero { grid-template-columns: 1fr; text-align: center; padding: 24px 16px; }
       .topbar { border-radius: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .avatar-img { animation: none; }
+      .story-scene { transition: none; }
     }
   </style>
 </head>
 <body>
 
+  <div id="nightlightTorch" aria-hidden="true"></div>
 
-  <svg class="cobweb-corner" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+  <svg class="cobweb-corner" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
     <path d="M0 0 L100 0 M0 0 L0 100 M0 0 L75 75 M0 0 L95 35 M0 0 L35 95" stroke-width="1.5"/>
     <path d="M25 0 Q22 22 0 25 M50 0 Q42 42 0 50 M75 0 Q62 62 0 75" stroke-width="1.5"/>
   </svg>
-  <svg class="cobweb-corner cobweb-right" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+  <svg class="cobweb-corner cobweb-right" viewBox="0 0 100 100" fill="none" stroke="currentColor" aria-hidden="true">
     <path d="M0 0 L100 0 M0 0 L0 100 M0 0 L75 75 M0 0 L95 35 M0 0 L35 95" stroke-width="1.5"/>
     <path d="M25 0 Q22 22 0 25 M50 0 Q42 42 0 50 M75 0 Q62 62 0 75" stroke-width="1.5"/>
   </svg>
@@ -360,11 +437,14 @@
       <button id="muteBtn" class="btn" aria-pressed="false" title="Required Accessible Mute Toggle">
         🔊 Sound: ON
       </button>
+      <button id="torchBtn" class="btn" title="Toggle Interactive Lantern Cursor Torch">
+        🔦 Torch: ON
+      </button>
       <button id="themeBtn" class="btn">
-         Witching Hour
+        🕯️ Witching Hour
       </button>
       <button id="chaosBtn" class="btn btn-berry">
-         Trick-or-Treat Chaos
+        🦇 Trick-or-Treat Chaos
       </button>
     </div>
   </header>
@@ -374,12 +454,12 @@
     <section class="hero">
       <span id="easterEggStar" class="secret-star" title="Hmm, this little pumpkin glows strangely... (Click on it 3 times ;>)">🎃</span>
       <div>
-        <p style="color: var(--accent-berry); font-weight: 700; letter-spacing: 0.8px;"> MIDNIGHT SHIFT · ABOUT THE BABY</p>
+        <p style="color: var(--accent-berry); font-weight: 700; letter-spacing: 0.8px;">MIDNIGHT NURSERY WORKSHOP · ABOUT THE BABY</p>
         <h1 style="font-size: clamp(2rem, 4vw, 3rem); margin: 8px 0 14px;">
           Hi, I'm Pip! <br/>I'm a Junior Dream Engineer.
         </h1>
         <p style="margin-bottom: 16px; color: var(--text-muted);">
-          I'm a friendly little skull baby with glowing amber eyes. Every All Hallows' Eve, I craft cozy music-box lullabies, spooky-proof bedside lanterns, and rooftop dream deliveries so my little ghost and bat friends can sleep tight!
+          I'm a friendly skull baby with glowing jack-o'-lantern amber eyes. Every eve, I craft cozy music-box lullabies, spooky-proof bedside lanterns, and rooftop dream deliveries so my little ghost and bat friends can sleep tight without a single nightmare!
         </p>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <span class="btn" style="cursor: default;"> Species: Skull Baby</span>
@@ -398,7 +478,7 @@
     </section>
 
     <section>
-      <h2 style="font-size: 2rem; margin-bottom: 6px;"> Pip's Nursery Inventions</h2>
+      <h2 style="font-size: 2rem; margin-bottom: 6px;">Pip's Nursery Inventions</h2>
       <p style="color: var(--text-muted);">Click and play with the enchanted bedtime creations from my workbench:</p>
 
       <div class="grid-3">
@@ -408,15 +488,20 @@
             <img src="https://hax.baby/baby/assets/pip_lullaby_box.png" alt="Pip's Lullaby Music Box" />
             <h3> The Phantom Lullaby Box</h3>
             <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px;">
-              A hand-cranked twilight music box. Tap the enchanted chimes below to play a soothing lullaby!
+              A hand-cranked twilight music box. Tap the chimes below or auto-play my signature Halloween lullaby!
             </p>
           </div>
-          <div class="synth-keys">
-            <button class="synth-key" data-freq="523.25">C5</button>
-            <button class="synth-key" data-freq="587.33">D5</button>
-            <button class="synth-key" data-freq="622.25">D#5</button>
-            <button class="synth-key" data-freq="783.99">G5</button>
-            <button class="synth-key" data-freq="830.61">G#5</button>
+          <div>
+            <div class="synth-keys">
+              <button class="synth-key" data-note="0" data-freq="523.25">C5</button>
+              <button class="synth-key" data-note="1" data-freq="587.33">D5</button>
+              <button class="synth-key" data-note="2" data-freq="622.25">D#5</button>
+              <button class="synth-key" data-note="3" data-freq="783.99">G5</button>
+              <button class="synth-key" data-note="4" data-freq="830.61">G#5</button>
+            </div>
+            <button id="playMelodyBtn" class="btn btn-berry" style="margin-top: 8px; width: 100%;">
+              🎶 Auto-Play Phantom Lullaby
+            </button>
           </div>
         </article>
 
@@ -439,210 +524,323 @@
         <article class="card">
           <div>
             <img src="https://hax.baby/baby/assets/pip_portrait.png" alt="Pip Portrait" />
-            <h3> broomstick &amp; Cloud Radar</h3>
+            <h3> Broomstick &amp; Cloud Radar</h3>
             <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px;">
               My moonlit navigation map for dropping sweet candy-coated dreams down neighborhood chimneys before midnight.
             </p>
           </div>
           <button id="deliverDreamBtn" class="btn btn-berry" style="margin-top: 12px; width: 100%;">
-             Dispatch a Cozy Dream
+            🎃 Dispatch a Cozy Halloween Dream
           </button>
         </article>
       </div>
     </section>
 
     <section style="margin-bottom: 48px;">
-      <h2 style="font-size: 2rem; margin-bottom: 16px;">🌙 My Midnight Workshop Journey</h2>
+      <h2 style="font-size: 2rem; margin-bottom: 16px;"> My Journey</h2>
+
       <div class="story-scene">
-        <p>
-          When the harvest moon rises above the crooked rooftops and the first owl hoots, I wake up with a sleepy yawn and polish my glowing amber eyes. Every night, I wind up my phantom music box before tiptoeing to the kitchen for a mug of warm marshmallow hot chocolate.
-          Then it's time for mama to give me a bubble bath. Next, I float down to my candlelit workshop to fill my glass jars with pumpkin-spice dreams. Once every jar is glowing, I teleport from chimney to chimney delivering sweet dreams to all my little ghost friends—before curling up at dawn for my morning nap!
+        <span class="scene-badge"> 8:00 PM — HARVEST MOON COCOA</span>
+        <h3 style="margin-bottom: 6px;">Waking Up in the Haunted Nursery</h3>
+        <p style="color: var(--text-muted);">
+          When the harvest moon rises above the crooked rooftops and the first owl hoots, I wake up with a sleepy yawn and polish my glowing amber eyes. Every Halloween evening, I wind up my phantom music box before tiptoeing to the kitchen for a warm mug of marshmallow hot chocolate, followed by a cozy bubble bath from mama!
+        </p>
+      </div>
+
+      <div class="story-scene">
+        <span class="scene-badge">10:15 PM — THE CANDLELIT WORKSHOP</span>
+        <h3 style="margin-bottom: 6px;">Bottling Pumpkin-Spice Dreams</h3>
+        <p style="color: var(--text-muted);">
+          Dressed in my starry nightcap, I float down to my candlelit workshop and line up my glass dream jars. I fill each jar with golden starlight, gentle lullaby notes, and cinnamon-sweet wishes so not a single little ghost or bat has a scary dream tonight.
+        </p>
+      </div>
+
+      <div class="story-scene">
+        <span class="scene-badge"> 11:59 PM — CHIMNEY TELEPORTATION</span>
+        <h3 style="margin-bottom: 6px;">Midnight Rooftop Deliveries</h3>
+        <p style="color: var(--text-muted);">
+          Once every jar is glowing bright, I hop onto my cloud cruiser and teleport from chimney to chimney across the sleeping neighborhood. After the last Halloween dream is safely delivered, I drift back home at dawn and curl up for my morning nap!
         </p>
       </div>
     </section>
 
     <section class="card" style="margin-bottom: 40px;">
-      <h3>Sign My Haunted Nursery Guestbook</h3>
+      <h3>📜 Sign My Haunted Nursery Guestbook</h3>
       <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px;">Leave a cozy Halloween wish for Pip and the neighborhood ghosts:</p>
       <form id="guestbookForm" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+        <label for="guestName" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Your spooky name</label>
         <input id="guestName" class="spooky-input" type="text" placeholder="Your spooky name..." required />
+        <label for="guestWish" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);">Your midnight dream wish</label>
         <input id="guestWish" class="spooky-input" type="text" placeholder="Leave a midnight dream wish..." required style="flex: 1;" />
         <button type="submit" class="btn btn-berry">🍬 Pin Spell</button>
       </form>
-      <div id="guestbookList" style="display: grid; gap: 8px;"></div>
+      <div id="guestList" aria-live="polite"></div>
     </section>
 
-    <!-- BONUS SIDE QUEST: Hit Counter Odometer (+1 pt) -->
-    <footer style="text-align: center; padding: 20px 0; border-top: 2px dashed var(--border-color);">
-      <p style="margin-bottom: 8px; font-weight: 600;">Total Halloween Dreams Delivered Tonight:</p>
-      <div id="odometer" class="odometer">001111</div>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;">
-        Pip's Midnight Nursery · All Treats, Zero Tricks
-      </p>
+    <footer class="site-footer">
+      <p style="margin-bottom: 8px;">Cozy dreams delivered tonight:</p>
+      <div id="odometer" class="odometer" role="img" aria-label="Dreams delivered counter"></div>
+      <p style="margin-top: 14px;">Made with pumpkin spice and zero nightmares. 🎃</p>
     </footer>
+
   </main>
 
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
   <script>
-    let isMuted = false;
-    let audioCtx = null;
+    (function () {
+      var root = document.documentElement;
+      var body = document.body;
+      var $ = function (id) { return document.getElementById(id); };
 
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var state = { muted: false, torchOn: true, dreams: 1031 };
+
+      /* ---------- Toast ---------- */
+      var toastEl = $('toast');
+      var toastTimer;
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2600);
       }
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-    }
 
-    function playChime(freq = 622.25, duration = 0.28) {
-      if (isMuted) return;
-      initAudio();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + duration);
-    }
-
-    const muteBtn = document.getElementById('muteBtn');
-    muteBtn.addEventListener('click', () => {
-      isMuted = !isMuted;
-      muteBtn.setAttribute('aria-pressed', String(isMuted));
-      muteBtn.textContent = isMuted ? '🔇 Sound: MUTED' : '🔊 Sound: ON';
-      if (!isMuted) playChime(783.99, 0.2);
-    });
-
-    // Global gentle click sound on all buttons
-    document.querySelectorAll('.btn').forEach(btn => {
-      btn.addEventListener('click', () => playChime(523.25, 0.12));
-    });
-
-    // Lullaby Music Box Synth Keys (Minor-key cozy Halloween tuning!)
-    document.querySelectorAll('.synth-key').forEach(key => {
-      key.addEventListener('click', () => {
-        const freq = parseFloat(key.getAttribute('data-freq'));
-        playChime(freq, 0.65);
-      });
-    });
-
-    const pupils = document.querySelectorAll('.pupil');
-    let lastSparkleTime = 0;
-
-    window.addEventListener('mousemove', (e) => {
-      // Eye tracking math
-      pupils.forEach(pupil => {
-        const rect = pupil.parentElement.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
-        const distance = Math.min(5, Math.hypot(e.clientX - centerX, e.clientY - centerY) / 25);
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        pupil.style.transform = `translate(${x}px, ${y}px)`;
-      });
-
-      // Halloween Cursor Trail
-      const now = Date.now();
-      if (now - lastSparkleTime > 65) {
-        lastSparkleTime = now;
-        const sparkle = document.createElement('span');
-        sparkle.className = 'sparkle';
-        sparkle.textContent = ['🎃', '👻', '🦇', '🍬', '✨'][Math.floor(Math.random() * 5)];
-        sparkle.style.left = `${e.clientX - 7}px`;
-        sparkle.style.top = `${e.clientY - 7}px`;
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 750);
+      /* ---------- Audio (music-box chimes) ---------- */
+      var audioCtx = null;
+      function getCtx() {
+        if (!audioCtx) {
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return null;
+          audioCtx = new AC();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
       }
-    });
+      function playChime(freq) {
+        if (state.muted) return;
+        var ctx = getCtx();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var overtone = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        overtone.type = 'triangle';
+        osc.frequency.value = freq;
+        overtone.frequency.value = freq * 2;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.28, now + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.1);
+        osc.connect(gain);
+        overtone.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        overtone.start(now);
+        osc.stop(now + 1.2);
+        overtone.stop(now + 1.2);
+      }
 
-    const themeBtn = document.getElementById('themeBtn');
-    themeBtn.addEventListener('click', () => {
-      const html = document.documentElement;
-      const isWitching = html.getAttribute('data-theme') === 'witching';
-      html.setAttribute('data-theme', isWitching ? 'halloween' : 'witching');
-      themeBtn.textContent = isWitching ? '🕯️ Witching Hour' : '🎃 Pumpkin Night';
-    });
-
-    document.getElementById('chaosBtn').addEventListener('click', () => {
-      document.body.classList.toggle('chaos-mode');
-    });
-
-    let starClicks = 0;
-    document.getElementById('easterEggStar').addEventListener('click', () => {
-      starClicks++;
-      playChime(523.25 + starClicks * 95, 0.3);
-      if (starClicks === 3) {
-        confetti({
-          particleCount: 100,
-          spread: 75,
-          origin: { y: 0.3 },
-          colors: ['#ff7518', '#9d4edd', '#ffbe0b', '#ffffff']
+      var keys = Array.prototype.slice.call(document.querySelectorAll('.synth-key'));
+      function flashKey(btn) {
+        btn.classList.add('playing');
+        setTimeout(function () { btn.classList.remove('playing'); }, 220);
+      }
+      keys.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          playChime(parseFloat(btn.dataset.freq));
+          flashKey(btn);
         });
-        [523.25, 622.25, 783.99, 1046.5].forEach((f, idx) => {
-          setTimeout(() => playChime(f, 0.4), idx * 120);
-        });
-        alert("SECRET UNLOCKED: You found Pip's Golden Jack-o'-Lantern Rattle! Good night & sweet dreams!");
-        starClicks = 0;
-      }
-    });
-
-    const glowSlider = document.getElementById('glowSlider');
-    const lanternImg = document.getElementById('lanternImg');
-    glowSlider.addEventListener('input', (e) => {
-      lanternImg.style.filter = `drop-shadow(0 0 ${e.target.value}px #ff7518)`;
-    });
-
-    let dreamCount = 1313;
-    const odometerEl = document.getElementById('odometer');
-    document.getElementById('deliverDreamBtn').addEventListener('click', () => {
-      dreamCount++;
-      odometerEl.textContent = String(dreamCount).padStart(6, '0');
-      playChime(830.61, 0.35);
-    });
-
-    // Scroll observer for Story Scenes
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
       });
-    }, { threshold: 0.2 });
-    document.querySelectorAll('.story-scene').forEach(el => observer.observe(el));
 
-    // LocalStorage Guestbook (+2 pts)
-    const defaultWishes = [
-      { name: "Barnaby the Bat", wish: "Thanks for the warm pumpkin lantern glow tonight, Pip!" },
-      { name: "Casper Jr", wish: "The minor-key lullaby put our whole haunted attic right to sleep!" }
-    ];
-    const guestbookList = document.getElementById('guestbookList');
-    const savedWishes =JSON.parse(localStorage.getItem('pip_halloween_wishes') || JSON.stringify(defaultWishes));
+      /* ---------- Auto-play melody ---------- */
+      var melody = [0, 0, 3, 3, 4, 4, 3, 2, 2, 1, 1, 0, 3, 3, 2, 2, 1, 1, 0];
+      var melodyBtn = $('playMelodyBtn');
+      var melodyPlaying = false;
+      melodyBtn.addEventListener('click', function () {
+        if (melodyPlaying) return;
+        if (state.muted) { toast('Sound is off. Turn it on to hear the lullaby.'); return; }
+        melodyPlaying = true;
+        melodyBtn.disabled = true;
+        melodyBtn.textContent = '🌙 Playing...';
+        melody.forEach(function (noteIdx, i) {
+          setTimeout(function () {
+            var key = keys[noteIdx];
+            playChime(parseFloat(key.dataset.freq));
+            flashKey(key);
+            if (i === melody.length - 1) {
+              setTimeout(function () {
+                melodyPlaying = false;
+                melodyBtn.disabled = false;
+                melodyBtn.textContent = '🎶 Auto-Play Phantom Lullaby';
+              }, 500);
+            }
+          }, i * 380);
+        });
+      });
 
-    function renderWishes() {
-      guestbookList.innerHTML = savedWishes.map(w => `
-        <div style="padding: 10px 14px; background: var(--bg-inset); border-radius: 12px; border: 1.5px solid var(--border-color);">
-          <strong style="color: var(--accent-amber);">${w.name}:</strong> <span>${w.wish}</span>
-        </div>
-      `).join('');
-    }
-    renderWishes();
+      /* ---------- Mute toggle ---------- */
+      var muteBtn = $('muteBtn');
+      muteBtn.addEventListener('click', function () {
+        state.muted = !state.muted;
+        muteBtn.setAttribute('aria-pressed', String(state.muted));
+        muteBtn.textContent = state.muted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+      });
 
-    document.getElementById('guestbookForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('guestName').value.trim();
-      const wish = document.getElementById('guestWish').value.trim();
-      if (name && wish) {
-        savedWishes.unshift({ name, wish });
-        localStorage.setItem('pip_halloween_wishes', JSON.stringify(savedWishes.slice(0, 10)));
-        renderWishes();
-        e.target.reset();
-        playChime(783.99, 0.3);
+      /* ---------- Cursor torch + eye tracking ---------- */
+      var torch = $('nightlightTorch');
+      var torchBtn = $('torchBtn');
+      var pupils = Array.prototype.slice.call(document.querySelectorAll('.pupil'));
+      var lastSparkle = 0;
+
+      document.addEventListener('pointermove', function (e) {
+        root.style.setProperty('--cursor-x', e.clientX + 'px');
+        root.style.setProperty('--cursor-y', e.clientY + 'px');
+
+        pupils.forEach(function (pupil) {
+          var rect = pupil.parentElement.getBoundingClientRect();
+          var cx = rect.left + rect.width / 2;
+          var cy = rect.top + rect.height / 2;
+          var angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+          var dist = Math.min(5, Math.hypot(e.clientX - cx, e.clientY - cy) / 20);
+          pupil.style.transform = 'translate(' + (Math.cos(angle) * dist) + 'px,' + (Math.sin(angle) * dist) + 'px)';
+        });
+
+        var now = Date.now();
+        if (now - lastSparkle > 90 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          lastSparkle = now;
+          var s = document.createElement('span');
+          s.className = 'sparkle';
+          s.textContent = ['✨', '🍬', '🦇'][Math.floor(Math.random() * 3)];
+          s.style.left = e.clientX + 'px';
+          s.style.top = e.clientY + 'px';
+          document.body.appendChild(s);
+          setTimeout(function () { s.remove(); }, 800);
+        }
+      });
+
+      torchBtn.addEventListener('click', function () {
+        state.torchOn = !state.torchOn;
+        torch.style.opacity = state.torchOn ? '1' : '0';
+        torchBtn.textContent = state.torchOn ? '🔦 Torch: ON' : '🔦 Torch: OFF';
+      });
+
+      /* ---------- Theme toggle ---------- */
+      var themeBtn = $('themeBtn');
+      themeBtn.addEventListener('click', function () {
+        var witching = root.getAttribute('data-theme') === 'witching';
+        root.setAttribute('data-theme', witching ? 'halloween' : 'witching');
+        themeBtn.textContent = witching ? '🕯️ Witching Hour' : '🎃 Pumpkin Night';
+      });
+
+      /* ---------- Chaos mode ---------- */
+      var chaosBtn = $('chaosBtn');
+      chaosBtn.addEventListener('click', function () {
+        var on = body.classList.toggle('chaos-mode');
+        chaosBtn.textContent = on ? '🧹 Tidy Up the Nursery' : '🦇 Trick-or-Treat Chaos';
+        if (on) toast('The bats rearranged everything!');
+      });
+
+      /* ---------- Easter egg: click the pumpkin 3 times ---------- */
+      var star = $('easterEggStar');
+      var starClicks = 0;
+      var starTimer;
+      star.addEventListener('click', function () {
+        starClicks++;
+        clearTimeout(starTimer);
+        starTimer = setTimeout(function () { starClicks = 0; }, 1200);
+        if (starClicks >= 3) {
+          starClicks = 0;
+          toast('Secret unlocked: Pip says boo-tiful dreams!');
+          if (window.confetti) {
+            confetti({
+              particleCount: 140,
+              spread: 90,
+              origin: { y: 0.4 },
+              colors: ['#ff7518', '#ffbe0b', '#9d4edd', '#fdf4e3']
+            });
+          }
+        }
+      });
+
+      /* ---------- Nightlight glow slider ---------- */
+      var lantern = $('lanternImg');
+      var glow = $('glowSlider');
+      function applyGlow() {
+        var v = Number(glow.value);
+        var color = root.getAttribute('data-theme') === 'witching' ? '#5eead4' : '#ff7518';
+        lantern.style.filter = 'drop-shadow(0 0 ' + v + 'px ' + color + ')';
       }
-    });
+      glow.addEventListener('input', applyGlow);
+      new MutationObserver(applyGlow).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+      /* ---------- Odometer ---------- */
+      var odo = $('odometer');
+      function renderOdometer() {
+        var digits = String(state.dreams).padStart(6, '0').split('');
+        odo.innerHTML = '';
+        digits.forEach(function (d) {
+          var span = document.createElement('span');
+          span.textContent = d;
+          odo.appendChild(span);
+        });
+        odo.setAttribute('aria-label', state.dreams + ' dreams delivered');
+      }
+      renderOdometer();
+
+      /* ---------- Dispatch a dream ---------- */
+      var dreams = [
+        'A dream of dancing pumpkins just slid down a chimney on Maple Lane.',
+        'A friendly ghost is now snoozing under a blanket of candy-corn clouds.',
+        'Sweet cocoa dreams delivered to a sleepy bat family.',
+        'A starlit trick-or-treat adventure landed safely at number 13.'
+      ];
+      $('deliverDreamBtn').addEventListener('click', function () {
+        state.dreams++;
+        renderOdometer();
+        toast(dreams[Math.floor(Math.random() * dreams.length)]);
+        if (window.confetti) {
+          confetti({ particleCount: 60, spread: 70, origin: { y: 0.8 }, colors: ['#ff7518', '#ffbe0b'] });
+        }
+      });
+
+      /* ---------- Scroll-triggered story scenes ---------- */
+      var scenes = document.querySelectorAll('.story-scene');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+        scenes.forEach(function (el) { io.observe(el); });
+      } else {
+        scenes.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      /* ---------- Guestbook (in-page only) ---------- */
+      var form = $('guestbookForm');
+      var list = $('guestList');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = $('guestName').value.trim();
+        var wish = $('guestWish').value.trim();
+        if (!name || !wish) return;
+
+        var entry = document.createElement('div');
+        entry.className = 'guest-entry';
+        var strong = document.createElement('strong');
+        strong.textContent = name;
+        entry.appendChild(strong);
+        entry.appendChild(document.createTextNode(' wished: ' + wish));
+        list.insertBefore(entry, list.firstChild);
+
+        form.reset();
+        $('guestName').focus();
+        toast('Your wish was pinned to the nursery wall!');
+      });
+    })();
   </script>
 </body>
 </html>
