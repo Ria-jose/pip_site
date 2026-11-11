@@ -13,7 +13,6 @@
 
   <style>
     :root {
-      /* Default: Dark & Cozy Halloween Pumpkin-Patch Palette (Zero Gore!) */
       --bg-primary: #0f0a19;
       --bg-card: #1b132b;
       --bg-inset: #130d20;
@@ -484,7 +483,7 @@
         <!-- Project 1: The Lullaby Lab -->
         <article class="card">
           <div>
-            <img src="https://hax.baby/baby/assets/pip_lullaby_box.png" alt="Pip's Lullaby Music Box" />
+            <img src="https://hax.baby/baby/assets/pip_lullaby_box.png" alt="Pip's Lullaby Music Box" style="border-radius: 85px; object-fit: cover; border-style: solid;" />
             <h3> The Phantom Lullaby Box</h3>
             <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px;">
               A hand-cranked twilight music box. Tap the chimes below or auto-play my signature Halloween lullaby!
@@ -507,7 +506,7 @@
         <!-- Project 2: Nightlight Collection -->
         <article class="card">
           <div>
-            <img id="lanternImg" src="https://hax.baby/baby/assets/pip_dream_lantern.png" alt="Pip's Dream Nightlight Lantern" style="filter: drop-shadow(0 0 14px #ff7518); transition: filter 0.3s ease; margin-bottom: 0; padding: 0; border-radius: 0; object-fit: cover; border-style: solid;" />
+            <img id="lanternImg" src="https://hax.baby/baby/assets/pip_dream_lantern.png" alt="Pip's Dream Nightlight Lantern" style="filter: drop-shadow(0 0 14px #ff7518); transition: filter 0.3s ease; margin-bottom: 0; padding: 0; border-radius: 85px; object-fit: cover; border-style: solid;" />
             <h3> Jack-o'-Lantern Nightlight</h3>
             <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px;">
               Bottled pumpkin-patch starlight calibrated to keep friendly closet ghosts cozy. Slide to turn up the glow!
@@ -522,7 +521,7 @@
         <!-- Project 3: Dream Delivery Routes -->
         <article class="card">
           <div>
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/c2386605-replacement-image-1-xNzwQALgcQbuggj0DgZi5lZjf3ey5Y.jpg" alt="Pip in a starry nightcap holding a glowing lantern and toy unicorn" style="object-fit: cover; object-position: center 35%; border-radius: 85px;" />
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/b2fe5d37-replacement-image-1-ZL8b4W37b4syHD0dzvSPsXKAlCzY86.webp" alt="Pip nestled in a starry cloud, holding a lantern and toy unicorn" style="object-fit: cover; object-position: center 35%; border-radius: 85px; border-style: solid;" />
             <h3> Broomstick &amp; Cloud Radar</h3>
             <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px;">
               My moonlit navigation map for dropping sweet candy-coated dreams down neighborhood chimneys before midnight.
@@ -786,7 +785,6 @@
       }
       renderOdometer();
 
-      /* ---------- Dispatch a dream ---------- */
       var dreams = [
         'A dream of dancing pumpkins just slid down a chimney on Maple Lane.',
         'A friendly ghost is now snoozing under a blanket of candy-corn clouds.',
@@ -818,7 +816,6 @@
         scenes.forEach(function (el) { el.classList.add('visible'); });
       }
 
-      /* ---------- Guestbook (in-page only) ---------- */
       var form = $('guestbookForm');
       var list = $('guestList');
       form.addEventListener('submit', function (e) {
